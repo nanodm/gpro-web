@@ -1,0 +1,44 @@
+/* Provide sufficient contrast against white background */
+body {
+    background-color: #0741AD;
+}
+
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+
+/* Login Page */
+
+.bg-login {
+    background-color: #0741AD;
+}
+
+.minh-100 {
+    height: 100vh;
+}
+
+.ct-font {
+    color: white;
+    font-size: 2em;
+}
+
+.font-s1 {
+    font-size: 0.9em;
+}
+
+.font-s2 {
+    font-size: 0.6em;
+}
+
+
