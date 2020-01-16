@@ -14,41 +14,11 @@ export class Login extends Component {
     constructor(props) {
         super(props);
 
-        /*
-        this.state = {
-            username: '',
-            password: ''
-        }
-        */
-        // redirect to home if already logged in
         if (authenticationService.currentUserValue) {
             this.props.history.push('/');
         }
+    }
 
-        //        this.login = this.login.bind(this);
-        //        this.onChange = this.onChange.bind(this);
-    }
-    /*
-    onChange(e) {
-        this.setState({[e.target.name]: e.target.value });
-        console.log(this.state);
-    }
-    */
-    /*
-    login() {
-        console.log("Login function");
-        authenticationService.login(this.state.username, this.state.password)
-            .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
-                    this.props.history.push(from);
-                },
-                error => {
-                    console.log("error");
-                }
-            );
-    }
-    */
     render() {
 
         return (
@@ -92,31 +62,17 @@ export class Login extends Component {
                                                     <div className="form-group">
                                                         <Field name="username" type="text" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} />
                                                         <ErrorMessage name="username" component="div" className="invalid-feedback" />
-
-                                                        {/*<input type="text" className="form-control" name="username"
-                                                            placeholder="usuario" onChange={this.onChange} />*/}
-
                                                     </div>
                                                     <div className="form-group">
-
                                                         <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
-                                                        <ErrorMessage name="password" component="div" className="invalid-feedback" />
-                                                        {/*<input type="password" className="form-control" name="password"
-                                                            placeholder="contrase&ntilde;a" onChange={this.onChange} />*/}
-
-
+                                                        <ErrorMessage name="password" component="div" className="invalid-feedback align-items-start" />
                                                     </div>
                                                     <div className="form-group">
                                                         <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Iniciar sesi&oacute;n</button>
-
-                                                        {/*<button type="submit" className="btn btn-primary" onClick={this.login}>
-                                                            Iniciar sesi&oacute;n</button>*/}
                                                     </div>
-
                                                     {status &&
                                                         <div className={'alert alert-danger'}>Usuario o contrase&ntilde;a incorrecta.</div>
                                                     }
-
                                                 </Form>
                                                 <div className="mt-4">
                                                     <p><Link to="/recov" className="text-light font-s1">&iquest;Ha olvidado su contrase&ntilde;a?</Link></p>
