@@ -31,7 +31,6 @@ export default class App extends Component {
 
     logout() {
         authenticationService.logout();
-        window.history.push('/login');
     }
     
 
