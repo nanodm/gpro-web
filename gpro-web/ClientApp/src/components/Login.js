@@ -46,6 +46,8 @@ export class Login extends Component {
                                 }
                             );
                     }}
+
+
                     render={({ errors, status, touched, isSubmitting }) => (
 
                         <div className="container-fluid minh-100 bg-login">
@@ -74,9 +76,11 @@ export class Login extends Component {
                                                         <div className={'alert alert-danger'}>Usuario o contrase&ntilde;a incorrecta.</div>
                                                     }
                                                 </Form>
+                                                {/*
                                                 <div className="mt-4">
                                                     <p><Link to="/recov" className="text-light font-s1">&iquest;Ha olvidado su contrase&ntilde;a?</Link></p>
                                                 </div>
+                                                */}
                                                 <div>
                                                     <p className="text-secondary font-s2">GPRO. Copyright (c) 2020 Lisandro Caceres, Mariano Durand Mansilla, Dardo Nosti. Licensed under the MIT license.<br />Versi&oacute;n 0.1. Enero 2020.</p>
                                                 </div>
