@@ -17,9 +17,9 @@ function login(username, password) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
-    };
+    }; 
 
-    return fetch('http://localhost:62480/users/authenticate', requestOptions)
+    return fetch('http://localhost:60932/usuarios/authenticate', requestOptions)
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes

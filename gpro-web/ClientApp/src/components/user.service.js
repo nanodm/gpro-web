@@ -8,5 +8,5 @@ export const userService = {
 
 function getAll() {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch('http://localhost:62480/users', requestOptions).then(handleResponse);
+    return fetch('http://localhost:60932/usuarios', requestOptions).then(handleResponse);
 }
