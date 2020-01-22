@@ -18,6 +18,6 @@ namespace gpro_web.Models
         public string TelefonoCliente { get; set; }
         public string EmailCliente { get; set; }
 
-        public ICollection<Proyecto> Proyecto { get; set; }
+        public virtual ICollection<Proyecto> Proyecto { get; set; }
     }
 }

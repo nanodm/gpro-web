@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gpro_web.Models
 {
@@ -7,11 +8,12 @@ namespace gpro_web.Models
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         public int IdEmpleado { get; set; }
-        public int IdTipoUsuario { get; set; }
+        public int IdRol { get; set; }
 
-        public Empleado IdEmpleadoNavigation { get; set; }
-        public TipoUsuario IdTipoUsuarioNavigation { get; set; }
+        public virtual Empleado IdEmpleadoNavigation { get; set; }
+        public virtual Rol IdRolNavigation { get; set; }
     }
 }

@@ -13,14 +13,22 @@ export class HomePage extends Component {
     }
 
     componentDidMount() {
-        userService.getAll().then(users => this.setState({ users }));
+        const { currentUser } = this.state;
+        if (currentUser.rol === "Admin" || currentUser.rol === "PM") {
+            userService.getAll().then(users => this.setState({ users }));
+        }
     }
 
     render() {
         const { currentUser, users } = this.state;
         return (
             <div>
+                <h1> {currentUser.rol === "Admin" && 
+                    <p>Hola Mundo!</p>}</h1>
+                <h1> {currentUser.rol !== "Admin" &&
+                    <p>Hola Mundo 2!</p>}</h1>
                 <h1>Hi {currentUser.username}!</h1>
+                <h2> {currentUser.rol} </h2>
                 <p>You're logged in with React & JWT!!</p>
                 <h3>Users from secure api end point:</h3>
                 {users &&

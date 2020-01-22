@@ -12,6 +12,7 @@ namespace gpro_web.Models
         public DateTime? FechaHorasTrab { get; set; }
         public string EstadoHorasTrab { get; set; }
 
-        public Tarea Tarea { get; set; }
+        public virtual EstadoHoras EstadoHorasTrabNavigation { get; set; }
+        public virtual Tarea Tarea { get; set; }
     }
 }

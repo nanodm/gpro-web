@@ -7,6 +7,7 @@ namespace gpro_web.Models
     {
         public Proyecto()
         {
+            EmpleadoProyecto = new HashSet<EmpleadoProyecto>();
             Tarea = new HashSet<Tarea>();
         }
 
@@ -16,7 +17,9 @@ namespace gpro_web.Models
         public string DescripcionProyecto { get; set; }
         public string EstadoProyecto { get; set; }
 
-        public Cliente ClienteIdClienteNavigation { get; set; }
-        public ICollection<Tarea> Tarea { get; set; }
+        public virtual Cliente ClienteIdClienteNavigation { get; set; }
+        public virtual EstadoProyecto EstadoProyectoNavigation { get; set; }
+        public virtual ICollection<EmpleadoProyecto> EmpleadoProyecto { get; set; }
+        public virtual ICollection<Tarea> Tarea { get; set; }
     }
 }

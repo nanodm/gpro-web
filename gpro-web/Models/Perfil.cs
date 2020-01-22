@@ -12,7 +12,8 @@ namespace gpro_web.Models
 
         public int IdPerfil { get; set; }
         public string DescripcionPerfil { get; set; }
+        public float ValorHora { get; set; }
 
-        public ICollection<PerfilEmpleado> PerfilEmpleado { get; set; }
+        public virtual ICollection<PerfilEmpleado> PerfilEmpleado { get; set; }
     }
 }

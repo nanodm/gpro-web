@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { authenticationService } from './authentication.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { userService } from './user.service';
 
 import Logo from '../assets/img/logo-gpro.png';
 import '../custom.css';
 
-export class Login extends Component {
-    static displayName = Login.name;
+export class Register extends Component {
 
+    /*
     constructor(props) {
         super(props);
-
-        if (authenticationService.currentUserValue) {
-            this.props.history.push('/');
-        }
     }
+    */
 
     render() {
         return (
@@ -23,17 +20,23 @@ export class Login extends Component {
                 <Formik
                     initialValues={{
                         username: '',
-                        password: ''
+                        password: '',
+                        idempleado: 0,
+                        idrol: 0
                     }}
                     validationSchema={Yup.object().shape({
                         username: Yup.string().required('El nombre de usuario es requerido.'),
-                        password: Yup.string().required('La contrase\u00f1a es requerida.')
+                        password: Yup.string().required('La contrase\u00f1a es requerida.'),
+                        idempleado: Yup.string().required('Requerido.'),
+                        idrol: Yup.string().required('Requerido.')
                     })}
-                    onSubmit={({ username, password }, { setStatus, setSubmitting }) => {
+                    onSubmit={({ username, password, idempleado, idrol }, { setStatus, setSubmitting }) => {
                         setStatus();
-                        authenticationService.login(username, password)
+                        var obj = { username, password, idempleado, idrol };
+                        userService.register(obj)
                             .then(
-                                user => {
+                                response => {
+                                    //alert("enviado");
                                     const { from } = this.props.location.state || { from: { pathname: "/" } };
                                     this.props.history.push(from);
                                 },
@@ -43,9 +46,7 @@ export class Login extends Component {
                                 }
                             );
                     }}
-                >
-                    {({ errors, status, touched, isSubmitting }) => (
-
+                    render={({ errors, status, touched, isSubmitting }) => (
                         <div className="container-fluid minh-100 bg-login">
                             <div className="container">
                                 <div className="row justify-content-center align-items-center minh-100">
@@ -55,29 +56,35 @@ export class Login extends Component {
                                     <div className="col-xs-10 col-sm-8 col-md-7">
                                         <div className="card bg-login border-0">
                                             <div className="card-body">
-                                                <div className="card-title ct-font">Bievenido/a a GPRO</div>
+                                                <div className="card-title ct-font">Registro de Usuarios</div>
                                                 <Form>
                                                     <div className="form-group">
+                                                        <label htmlFor="username">Username</label>
                                                         <Field name="username" type="text" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} />
                                                         <ErrorMessage name="username" component="div" className="invalid-feedback" />
                                                     </div>
                                                     <div className="form-group">
-
+                                                        <label htmlFor="password">Password</label>
                                                         <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                                                         <ErrorMessage name="password" component="div" className="invalid-feedback" />
                                                     </div>
                                                     <div className="form-group">
-                                                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Iniciar sesi&oacute;n</button>
+                                                        <label htmlFor="idempleado">Id Empleado</label>
+                                                        <Field name="idempleado" type="number" className={'form-control' + (errors.idempleado && touched.idempleado ? ' is-invalid' : '')} />
+                                                        <ErrorMessage name="idempleado" component="div" className="invalid-feedback" />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label htmlFor="idrol">Id Rol</label>
+                                                        <Field name="idrol" type="number" className={'form-control' + (errors.idrol && touched.idrol ? ' is-invalid' : '')} />
+                                                        <ErrorMessage name="idrol" component="div" className="invalid-feedback" />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Registrar</button>
                                                     </div>
                                                     {status &&
                                                         <div className={'alert alert-danger'}>Usuario o contrase&ntilde;a incorrecta.</div>
                                                     }
                                                 </Form>
-                                                {/*
-                                                    <div className="mt-4">
-                                                        <p><Link to="/recov" className="text-light font-s1">&iquest;Ha olvidado su contrase&ntilde;a?</Link></p>
-                                                    </div>
-                                                    */}
                                                 <div>
                                                     <p className="text-secondary font-s2">GPRO. Copyright (c) 2020 Lisandro Caceres, Mariano Durand Mansilla, Dardo Nosti. Licensed under the MIT license.<br />Versi&oacute;n 0.1. Enero 2020.</p>
                                                 </div>
@@ -88,8 +95,8 @@ export class Login extends Component {
                             </div>
                         </div>
                     )}
-                </Formik>
-            </div>        
+                />
+            </div>
         )
     }
 }

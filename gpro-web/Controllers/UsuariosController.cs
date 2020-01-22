@@ -24,15 +24,6 @@ namespace gpro_web.Controllers
     [Route("[controller]")]
     public class UsuariosController : ControllerBase
     {
-        //private readonly gpro_dbContext _context;
-
-        /*
-        public UsuariosController(gpro_dbContext context)
-        {
-            _context = context;
-        }
-        */
-
         private IUsuarioService _userService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
@@ -62,7 +53,8 @@ namespace gpro_web.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.IdRolNavigation.Rol1),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -75,12 +67,33 @@ namespace gpro_web.Controllers
             {
                 Id = user.Id,
                 Username = user.Username,
-                //FirstName = user.FirstName,
-                //LastName = user.LastName,
+                IdRol = user.IdRol,
+                Rol = user.IdRolNavigation.Rol1,
                 Token = tokenString
             });
         }
 
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody]UserDto userDto)
+        {
+            // map dto to entity
+            var user = _mapper.Map<Usuario>(userDto);
+
+            try
+            {
+                // save 
+                _userService.Create(user, userDto.Password);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize (Roles = "Admin, PM")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -93,116 +106,52 @@ namespace gpro_web.Controllers
         public IActionResult GetById(int id)
         {
             var user = _userService.GetById(id);
+
+            /* agregado -> revisar */
+            //if (user == null)
+            //{
+            //    return NotFound();
+            //}
+
+
+            // only allow admins to access other user records
+            //var currentUserId = int.Parse(User.Identity.Name);
+            //if (id != currentUserId && !User.IsInRole(Role.Admin))
+            //{
+            //    return Forbid();
+            //}
+            /* ******** */
+
             var userDto = _mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
 
-    
-
-        /* lo que sigue es original */
-        /*
-        // GET: api/Usuarios
-        [HttpGet]
-        public IEnumerable<Usuario> GetUsuario()
-        {
-            return _context.Usuario;
-        }
-
-        // GET: api/Usuarios/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsuario([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var usuario = await _context.Usuario.FindAsync(id);
-
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(usuario);
-        }
-        
-        // PUT: api/Usuarios/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario([FromRoute] int id, [FromBody] Usuario usuario)
+        public IActionResult Update(int id, [FromBody]UserDto userDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != usuario.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(usuario).State = EntityState.Modified;
+            // map dto to entity and set id
+            var user = _mapper.Map<Usuario>(userDto);
+            user.Id = id;
 
             try
             {
-                await _context.SaveChangesAsync();
+                // save 
+                _userService.Update(user, userDto.Password);
+                return Ok();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (AppException ex)
             {
-                if (!UsuarioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
             }
-
-            return NoContent();
         }
 
-        // POST: api/Usuarios
-        [HttpPost]
-        public async Task<IActionResult> PostUsuario([FromBody] Usuario usuario)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Usuario.Add(usuario);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
-        }
-
-        // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuario([FromRoute] int id)
+        public IActionResult Delete(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var usuario = await _context.Usuario.FindAsync(id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            _context.Usuario.Remove(usuario);
-            await _context.SaveChangesAsync();
-
-            return Ok(usuario);
+            _userService.Delete(id);
+            return Ok();
         }
-
-        private bool UsuarioExists(int id)
-        {
-            return _context.Usuario.Any(e => e.Id == id);
-        }
-        */
     }
     
 }

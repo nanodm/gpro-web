@@ -18,8 +18,8 @@ namespace gpro_web.Models
         public int HorasEstimadasTarea { get; set; }
         public int? HorasOverbudgetTarea { get; set; }
 
-        public PerfilEmpleado PerfilEmpleado { get; set; }
-        public Proyecto ProyectoIdProyectoNavigation { get; set; }
-        public ICollection<HoraTrabajada> HoraTrabajada { get; set; }
+        public virtual PerfilEmpleado PerfilEmpleado { get; set; }
+        public virtual Proyecto ProyectoIdProyectoNavigation { get; set; }
+        public virtual ICollection<HoraTrabajada> HoraTrabajada { get; set; }
     }
 }

@@ -17,15 +17,22 @@ namespace gpro_web.Models
 
         public virtual DbSet<Cliente> Cliente { get; set; }
         public virtual DbSet<Empleado> Empleado { get; set; }
-        public virtual DbSet<Funcion> Funcion { get; set; }
+        public virtual DbSet<EmpleadoProyecto> EmpleadoProyecto { get; set; }
+        public virtual DbSet<EstadoHoras> EstadoHoras { get; set; }
+        public virtual DbSet<EstadoProyecto> EstadoProyecto { get; set; }
         public virtual DbSet<HoraTrabajada> HoraTrabajada { get; set; }
+        public virtual DbSet<Liquidacion> Liquidacion { get; set; }
+        public virtual DbSet<Modulo> Modulo { get; set; }
+        public virtual DbSet<Operacion> Operacion { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<PerfilEmpleado> PerfilEmpleado { get; set; }
         public virtual DbSet<Proyecto> Proyecto { get; set; }
+        public virtual DbSet<Rol> Rol { get; set; }
+        public virtual DbSet<RolOperacion> RolOperacion { get; set; }
         public virtual DbSet<Tarea> Tarea { get; set; }
-        public virtual DbSet<TipoUsuario> TipoUsuario { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -34,6 +41,7 @@ namespace gpro_web.Models
                 optionsBuilder.UseSqlServer("Server=tcp:servgpro.duckdns.org,49172; Database=gpro_db; User Id=gpro; Password=Pubdigitalix0;");
             }
         }
+        */
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -89,32 +97,79 @@ namespace gpro_web.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Domicilio)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FechaIngreso)
                     .HasColumnName("fechaIngreso")
                     .HasColumnType("date");
+
+                entity.Property(e => e.Localidad)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nacionalidad)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.NombreEmpleado)
                     .IsRequired()
                     .HasColumnName("nombreEmpleado")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Provincia)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Telefono)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Funcion>(entity =>
+            modelBuilder.Entity<EmpleadoProyecto>(entity =>
             {
-                entity.Property(e => e.Abmcliente).HasColumnName("ABMCliente");
+                entity.HasKey(e => new { e.IdEmpleado, e.IdProyecto });
 
-                entity.Property(e => e.Abmproyecto).HasColumnName("ABMProyecto");
-
-                entity.Property(e => e.Abmtarea).HasColumnName("ABMTarea");
-
-                entity.Property(e => e.Abmusuario).HasColumnName("ABMUsuario");
-
-                entity.HasOne(d => d.IdTipoUsuarioNavigation)
-                    .WithMany(p => p.Funcion)
-                    .HasForeignKey(d => d.IdTipoUsuario)
+                entity.HasOne(d => d.IdEmpleadoNavigation)
+                    .WithMany(p => p.EmpleadoProyecto)
+                    .HasForeignKey(d => d.IdEmpleado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Funcion_TipoUsuario");
+                    .HasConstraintName("FK_EmpleadoProyecto_Empleado");
+
+                entity.HasOne(d => d.IdProyectoNavigation)
+                    .WithMany(p => p.EmpleadoProyecto)
+                    .HasForeignKey(d => d.IdProyecto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EmpleadoProyecto_Proyecto");
+            });
+
+            modelBuilder.Entity<EstadoHoras>(entity =>
+            {
+                entity.HasKey(e => e.EstadoHoras1);
+
+                entity.Property(e => e.EstadoHoras1)
+                    .HasColumnName("EstadoHoras")
+                    .HasMaxLength(9)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<EstadoProyecto>(entity =>
+            {
+                entity.HasKey(e => e.EstadoProyecto1);
+
+                entity.Property(e => e.EstadoProyecto1)
+                    .HasColumnName("EstadoProyecto")
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
             });
 
             modelBuilder.Entity<HoraTrabajada>(entity =>
@@ -132,18 +187,63 @@ namespace gpro_web.Models
                 entity.Property(e => e.EstadoHorasTrab)
                     .IsRequired()
                     .HasColumnName("estadoHorasTrab")
-                    .HasMaxLength(10)
+                    .HasMaxLength(9)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FechaHorasTrab)
                     .HasColumnName("fechaHorasTrab")
                     .HasColumnType("date");
 
+                entity.HasOne(d => d.EstadoHorasTrabNavigation)
+                    .WithMany(p => p.HoraTrabajada)
+                    .HasForeignKey(d => d.EstadoHorasTrab)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_HoraTrabajada_EstadoHoras");
+
                 entity.HasOne(d => d.Tarea)
                     .WithMany(p => p.HoraTrabajada)
                     .HasForeignKey(d => new { d.ProyectoIdProyecto, d.TareaIdTarea })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_HoraTrabajada_Tarea");
+            });
+
+            modelBuilder.Entity<Liquidacion>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasMaxLength(10);
+
+                entity.HasOne(d => d.IdEmpleadoNavigation)
+                    .WithMany(p => p.Liquidacion)
+                    .HasForeignKey(d => d.IdEmpleado)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Liquidacion_Empleado");
+            });
+
+            modelBuilder.Entity<Modulo>(entity =>
+            {
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Operacion>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.Operacion)
+                    .HasForeignKey<Operacion>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Oper_Modulo");
             });
 
             modelBuilder.Entity<Perfil>(entity =>
@@ -197,7 +297,7 @@ namespace gpro_web.Models
                 entity.Property(e => e.EstadoProyecto)
                     .IsRequired()
                     .HasColumnName("estadoProyecto")
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TituloProyecto)
@@ -211,6 +311,40 @@ namespace gpro_web.Models
                     .HasForeignKey(d => d.ClienteIdCliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_idCliente");
+
+                entity.HasOne(d => d.EstadoProyectoNavigation)
+                    .WithMany(p => p.Proyecto)
+                    .HasForeignKey(d => d.EstadoProyecto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Proyecto_EstadoProyecto");
+            });
+
+            modelBuilder.Entity<Rol>(entity =>
+            {
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Rol1)
+                    .IsRequired()
+                    .HasColumnName("Rol")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RolOperacion>(entity =>
+            {
+                entity.HasOne(d => d.IdOperacionNavigation)
+                    .WithMany(p => p.RolOperacion)
+                    .HasForeignKey(d => d.IdOperacion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RolOp_Operacion");
+
+                entity.HasOne(d => d.IdRolNavigation)
+                    .WithMany(p => p.RolOperacion)
+                    .HasForeignKey(d => d.IdRol)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RolOp_Rol");
             });
 
             modelBuilder.Entity<Tarea>(entity =>
@@ -248,25 +382,15 @@ namespace gpro_web.Models
                     .HasConstraintName("FK_Tarea_PerfilEmpleado");
             });
 
-            modelBuilder.Entity<TipoUsuario>(entity =>
-            {
-                entity.Property(e => e.Descripcion)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TipoUsuario1)
-                    .IsRequired()
-                    .HasColumnName("TipoUsuario")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.Property(e => e.Password)
+                entity.Property(e => e.PasswordHash)
                     .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
+                    .HasMaxLength(64);
+
+                entity.Property(e => e.PasswordSalt)
+                    .IsRequired()
+                    .HasMaxLength(128);
 
                 entity.Property(e => e.Username)
                     .IsRequired()
@@ -279,11 +403,11 @@ namespace gpro_web.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Usuario_Empleado");
 
-                entity.HasOne(d => d.IdTipoUsuarioNavigation)
+                entity.HasOne(d => d.IdRolNavigation)
                     .WithMany(p => p.Usuario)
-                    .HasForeignKey(d => d.IdTipoUsuario)
+                    .HasForeignKey(d => d.IdRol)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Usuario_TipoUsuario");
+                    .HasConstraintName("FK_Usuario_Rol");
             });
         }
     }

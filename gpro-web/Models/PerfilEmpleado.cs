@@ -13,8 +13,8 @@ namespace gpro_web.Models
         public int PerfilEmpleadoIdPerfil { get; set; }
         public int PerfilEmpleadoIdEmpleado { get; set; }
 
-        public Empleado PerfilEmpleadoIdEmpleadoNavigation { get; set; }
-        public Perfil PerfilEmpleadoIdPerfilNavigation { get; set; }
-        public ICollection<Tarea> Tarea { get; set; }
+        public virtual Empleado PerfilEmpleadoIdEmpleadoNavigation { get; set; }
+        public virtual Perfil PerfilEmpleadoIdPerfilNavigation { get; set; }
+        public virtual ICollection<Tarea> Tarea { get; set; }
     }
 }
