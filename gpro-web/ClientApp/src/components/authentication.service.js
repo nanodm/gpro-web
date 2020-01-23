@@ -1,6 +1,4 @@
 import { BehaviorSubject } from 'rxjs';
-
-//import { config } from 'config';
 import { handleResponse } from './handle-response';
 
 
