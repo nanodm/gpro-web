@@ -15,6 +15,7 @@ import { Home } from './components/Home';
 import Logo from '../src/assets/img/logo-gpro-nav.png';
 import './custom.css';
 import { authenticationService } from './components/authentication.service';
+import ScrollUpButton from "react-scroll-up-button";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -42,8 +43,12 @@ export default class App extends Component {
     render() {
         const { currentUser, loggedIn } = this.state;
         return (
+            
             <Router history={window.history}>
+                
+                
                 <div>
+                    <ScrollUpButton style={{ backgroundColor: "rgba(7, 65, 173, 0.80)"}} />
                     {currentUser &&
                         <div>
                         <nav className="navbar fixed-top navbar-expand-md navbar-dark home-navbar-bg" id="barranav">
@@ -229,6 +234,7 @@ export default class App extends Component {
 
                             {/* <!-- MAIN --> */ }
                             <div className="col p-4">
+                                
                                 <PrivateRoute exact path="/" component={Home} />
                                 {/* 
                                 <h1 className="display-4">Collapsing Sidebar Menu</h1>
@@ -255,7 +261,8 @@ export default class App extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     {/*<Route path="/recov" component={Recov} />*/}
-                </div >
+                    </div >
+                
             </Router >
         );
     }
