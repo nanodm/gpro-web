@@ -11,7 +11,7 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-
+        document.body.style.backgroundColor = '#0741AD';
         if (authenticationService.currentUserValue) {
             this.props.history.push('/');
         }
