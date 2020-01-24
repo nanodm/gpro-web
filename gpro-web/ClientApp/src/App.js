@@ -54,7 +54,7 @@ export default class App extends Component {
                                 <span className="navbar-toggler-icon"></span>
                             </button>
                             <a className="navbar-brand" href="#">
-                                <img src={Logo} width="27px" className="d-inline-block align-top" alt="" style={{ marginTop: "2px" }}></img>
+                                <img src={Logo} width="27px" className="d-inline-block align-top" alt="" style={{ marginTop: "2px", marginLeft: "2px" }}></img>
                                 <span className="menu-collapsed ml-2">GPRO</span>
                                 <span className="menu-collapsed ml-2 font-s-logo">V. 0.1</span>
                             </a>
@@ -70,7 +70,7 @@ export default class App extends Component {
                                         <a className="nav-link" href="#top">Inicio</a>
                                     </li>
                                     <li className="nav-item">
-                                        <button type="button" className="btn btn-primary nav-item" onClick={this.logout}>Cerrar sesi&oacute;n</button>
+                                        <button type="button" className="btn btn-primary nav-item" onClick={this.logout} style={{ marginRight: "2px"}}>Cerrar sesi&oacute;n</button>
                                     </li>
 
                                     {/*
