@@ -46,7 +46,7 @@ export default class App extends Component {
                 
                 
                 <div>
-                    <ScrollUpButton style={{ backgroundColor: "rgba(32, 35, 42, 0.80)"}} />
+                    <ScrollUpButton style={{ backgroundColor: "rgba(32, 35, 42, 0.80)", borderRadius: "5px"}} />
                     {currentUser &&
                         <div>
                         <nav className="navbar fixed-top navbar-expand-md navbar-dark home-navbar-bg" id="barranav">
