@@ -45,7 +45,9 @@ code {
 /* Home Page */
 
 .home-navbar-bg {
-    background-color: #0741AD;
+    
+     background-color: #20232a; 
+    /*background-color: #0741AD;*/
 }
 
 /* NavBar & Menu */

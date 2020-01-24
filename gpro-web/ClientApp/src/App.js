@@ -4,15 +4,13 @@ import {
     BrowserRouter as Router,
     Route,
     Redirect,
-    Link
 } from 'react-router-dom';
-import { Role } from './components/role';
 import { PrivateRoute } from './components/PrivateRoute';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { Home } from './components/Home';
 /*import { Recov } from './components/Recov';*/
-import Logo from '../src/assets/img/logo-gpro-nav.png';
+import Logo from '../src/assets/img/logo-gpro-nav-c.png';
 import './custom.css';
 import { authenticationService } from './components/authentication.service';
 import ScrollUpButton from "react-scroll-up-button";
@@ -48,7 +46,7 @@ export default class App extends Component {
                 
                 
                 <div>
-                    <ScrollUpButton style={{ backgroundColor: "rgba(7, 65, 173, 0.80)"}} />
+                    <ScrollUpButton style={{ backgroundColor: "rgba(32, 35, 42, 0.80)"}} />
                     {currentUser &&
                         <div>
                         <nav className="navbar fixed-top navbar-expand-md navbar-dark home-navbar-bg" id="barranav">
@@ -56,7 +54,7 @@ export default class App extends Component {
                                 <span className="navbar-toggler-icon"></span>
                             </button>
                             <a className="navbar-brand" href="#">
-                                <img src={Logo} width="27px" className="d-inline-block align-top" alt=""></img>
+                                <img src={Logo} width="27px" className="d-inline-block align-top" alt="" style={{ marginTop: "2px" }}></img>
                                 <span className="menu-collapsed ml-2">GPRO</span>
                                 <span className="menu-collapsed ml-2 font-s-logo">V. 0.1</span>
                             </a>
