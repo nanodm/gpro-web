@@ -4,6 +4,7 @@ import {
     BrowserRouter as Router,
     Route,
     Redirect,
+    Link
 } from 'react-router-dom';
 import { PrivateRoute } from './components/PrivateRoute';
 import { Login } from './components/Login';
