@@ -8,7 +8,7 @@ export const clienteService = {
 
 
 
-function getByString(dato: string) {
+function getByString(dato) {
     const requestOptions = { method: 'GET', headers: authHeader() };
     return fetch(`http://localhost:60932/cliente/dato/${dato}`, requestOptions).then(handleResponse);
 }

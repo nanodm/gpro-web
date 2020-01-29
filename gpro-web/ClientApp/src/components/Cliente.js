@@ -30,23 +30,32 @@ export class Cliente extends Component {
         return (
             <div>
                 <Formik
-                    initialValues={{ dato: '' }}
+                    initialValues={{ dato: '', cuit: '' }}
                     validate={values => {
                         let errors = {};
-                        if (!values.dato) {
-                            errors.dato = 'Campo requerido.';
+                        if (!values.dato && !values.cuit) {
+                            errors = 'Ingrese un dato para realizar la consulta.';
+                        } else if (values.dato && values.cuit){
+                            errors = 'Ingrese datos en un solo campo.';
                         }
                         return errors;
                     }}
-                    onSubmit={(values, { setStatus, setSubmitting }) => {
+                    onSubmit={(values, { setStatus }) => {
                         setStatus();
-                        clienteService.getByString(values.dato).then(
-                            consulta => this.setState({ consulta })
-                        );
+                        if (values.dato && (values.cuit == '') ) {
+                            clienteService.getByString(values.dato).then(
+                                consulta => this.setState({ consulta })
+                            );
+                        } else {
+                            clienteService.getById(values.cuit).then(
+                                consulta => this.setState({ consulta })
+                            );
+                            setStatus();
+                        }
                     }
                     }
                 >
-                    {({ errors, status, touched, isSubmitting }) => (
+                    {({ map }) => (
 
                         <div className="container-fluid minh-100 ">
                             <div className="container">
@@ -54,10 +63,13 @@ export class Cliente extends Component {
                                     <div className="buscar-clientes">
                                         <div className="card border-0">
                                             <div className="card-body">
-                                                <div className="txt-color">Buscar cliente</div>
                                                 <Form>
-                                                    <div className="form-group">
+                                                    <div className="form-group txt-color">
+                                                        Nombre/Apellido/Razón social:
                                                         <Field name="dato" type="text" className={'form-control'} />
+                                                        <ErrorMessage name="dato" component="div" className="invalid-feedback" />
+                                                        CUIT:
+                                                        <Field name="cuit" type="text" className={'form-control'} />
                                                         <ErrorMessage name="dato" component="div" className="invalid-feedback" />
                                                     </div>
 
@@ -87,7 +99,7 @@ export class Cliente extends Component {
                                                             <td className="column-tb3">{cons.direccionCliente}</td>
                                                             <td className="column-tb1">{cons.telefonoCliente}</td>
                                                             <td className="column-tb2">{cons.emailCliente}</td>
-                                                            </tr>)}
+                                                        </tr>)}
                                                 </div>
                                             </div>
                                         </div>
