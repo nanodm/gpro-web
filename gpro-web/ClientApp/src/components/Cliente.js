@@ -14,7 +14,8 @@ export class Cliente extends Component {
         this.state = {
             currentUser: authenticationService.currentUserValue,
             users: null,
-            consulta: []
+            consulta: [],
+            idCli: []
         };
     }
 
@@ -48,14 +49,14 @@ export class Cliente extends Component {
                             );
                         } else {
                             clienteService.getById(values.cuit).then(
-                                consulta => this.setState({ consulta })
-                            );
-                            setStatus();
+                                idCli => this.setState({ consulta: [idCli] })
+                            )
+                            
                         }
                     }
                     }
                 >
-                    {({ map }) => (
+                    {({ }) => (
 
                         <div className="container-fluid minh-100 ">
                             <div className="container">
@@ -90,7 +91,8 @@ export class Cliente extends Component {
 
                                                         </tr>
                                                     </thead>
-                                                    {consulta.map(cons =>
+                                                    {
+                                                        consulta.map(cons =>
                                                         <tr>
                                                             <td className="column-tb1">{cons.idCliente}</td>
                                                             <td className="column-tb3">{cons.razonSocialCliente}</td>
