@@ -48,9 +48,8 @@ export class Cliente extends Component {
                             );
                         } else {
                             clienteService.getById(values.cuit).then(
-                                consulta => this.setState({ consulta })
+                                consulta => this.setState({ consulta: [consulta] })
                             );
-                            setStatus();
                         }
                     }
                     }
