@@ -112,25 +112,27 @@ export class Cliente extends Component {
                                         setStatus(error);
                                     })
 
-                        if (values.dato && (values.cuit === '') ) {
-                            clienteService.getByString(values.dato).then(
-                                consulta => this.setState({ consulta })
-                            );
+                            if (values.dato && (values.cuit === '')) {
+                                clienteService.getByString(values.dato).then(
+                                    consulta => this.setState({ consulta })
+                                );
 
-                        } else {
-                            clienteService.getById(values.cuit)
-                                .then(
-                                    consulta => {
-                                        this.setState({ consulta: [consulta], mostrar: true });
-                                        setSubmitting(false);
-                                    },
-                                    error => {
-                                        setSubmitting(false);
-                                        setStatus(error);
-                                    });
+                            } else {
+                                clienteService.getById(values.cuit)
+                                    .then(
+                                        consulta => {
+                                            this.setState({ consulta: [consulta], mostrar: true });
+                                            setSubmitting(false);
+                                        },
+                                        error => {
+                                            setSubmitting(false);
+                                            setStatus(error);
+                                        });
+                            }
                         }
                     }
                     }
+                    
                 >
                     {({ errors, status, touched, isSubmitting }) => (
                         <div className="container">
