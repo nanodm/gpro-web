@@ -14,7 +14,7 @@ export class Cliente extends Component {
             mostrar: false
         };
     }
-
+    
     limpiarPantalla = () => {
         this.setState({
             mostrar: false

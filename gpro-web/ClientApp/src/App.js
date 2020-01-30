@@ -237,7 +237,8 @@ export default class App extends Component {
                             <div className="col p-4">
                                 
                                 <PrivateRoute exact path="/" component={Home} />
-                                <Route path="/clientes" component={Cliente} />
+                                <PrivateRoute path="/clientes" roles={["Admin"]} component={Cliente} />
+                                {/*<Route path="/clientes" component={Cliente} />*/}
                                 {/* 
                                 <h1 className="display-4">Collapsing Sidebar Menu</h1>
                                 <div className="card">
