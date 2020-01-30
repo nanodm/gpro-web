@@ -1,6 +1,4 @@
 ﻿import React, { Component } from 'react';
-import { userService } from './user.service';
-import { authenticationService } from './authentication.service';
 import { clienteService } from './cliente.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -8,23 +6,13 @@ import * as Yup from 'yup';
 
 export class Cliente extends Component {
     static displayName = Cliente.name;
+
     constructor(props) {
         super(props);
-        document.body.style.backgroundColor = '#FFFFFF';
-        document.body.style.paddingTop = '53px';
         this.state = {
-            currentUser: authenticationService.currentUserValue,
-            users: null,
             consulta: [],
             mostrar: false
         };
-    }
-
-    componentDidMount() {
-        const { currentUser } = this.state;
-        if (currentUser.rol === "Admin" || currentUser.rol === "PM") {
-            userService.getAll().then(users => this.setState({ users }));
-        }
     }
 
     limpiarPantalla = () => {
@@ -39,6 +27,7 @@ export class Cliente extends Component {
             <div>
                 <Formik
                     initialValues={{ dato: '', cuit: '' }}
+
                     validationSchema={Yup.object().shape(
                         {
                             dato: Yup.string()
@@ -58,28 +47,25 @@ export class Cliente extends Component {
                         }, ['dato', 'cuit']
 
                     )}
+
                     onSubmit={(values, { setStatus, setSubmitting }) => {
                         setStatus();
                         if (values.dato && (values.cuit == '')) {
                             clienteService.getByString(values.dato)
                                 .then(
                                     consulta => {
-                                        this.setState({ consulta });
-                                        this.setState({ mostrar: true });
+                                        this.setState({ consulta, mostrar: true });
                                         setSubmitting(false);
                                     },
                                     error => {
                                         setSubmitting(false);
                                         setStatus(error);
                                     })
-                        } else if (values.dato && values.cuit) {
-                            setSubmitting(false);
                         } else {
                             clienteService.getById(values.cuit)
                                 .then(
                                     consulta => {
-                                        this.setState({ consulta: [consulta] });
-                                        this.setState({ mostrar: true });
+                                        this.setState({ consulta: [consulta], mostrar: true });
                                         setSubmitting(false);
                                     },
                                     error => {
@@ -95,7 +81,7 @@ export class Cliente extends Component {
                             <div className="row">
                                 <div className="col">
                                     <Form>
-                                        <div className="form-group txt-color">
+                                        <div className="form-group">
                                             Nombre/Apellido/Razón social:
                                                         <Field name="dato" type="text" className={'form-control' + (errors.dato && touched.dato ? ' is-invalid' : '')} />
                                             <ErrorMessage name="dato" component="div" className="invalid-feedback" />
