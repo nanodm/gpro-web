@@ -3,6 +3,7 @@ import { userService } from './user.service';
 import { authenticationService } from './authentication.service';
 import { clienteService } from './cliente.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 
 export class Cliente extends Component {
@@ -31,32 +32,58 @@ export class Cliente extends Component {
             <div>
                 <Formik
                     initialValues={{ dato: '', cuit: '' }}
-                    validate={values => {
-                        let errors = {};
-                        if (!values.dato && !values.cuit) {
-                            errors = 'Ingrese un dato para realizar la consulta.';
-                        } else if (values.dato && values.cuit){
-                            errors = 'Ingrese datos en un solo campo.';
-                        }
-                        return errors;
-                    }}
-                    onSubmit={(values, { setStatus }) => {
+                    validationSchema={Yup.object().shape(
+                        {
+                            dato: Yup.string()
+                                .when('cuit', {
+                                    is: (val) => val == undefined,
+                                    then: Yup.string().required('Al menos un campo es requerido.'),
+                                    otherwise: Yup.string().max(0, 'Ingrese datos en un solo campo.')
+                                }),
+
+                            cuit: Yup.string()
+                                .when('dato', {
+                                    is: (val) => val == undefined,
+                                    then: Yup.string().required('Al menos un campo es requerido.'),
+                                    otherwise: Yup.string().max(0, 'Ingrese datos en un solo campo.')
+                                })
+
+                        }, ['dato', 'cuit']
+
+                    )}
+                    onSubmit={(values, { setStatus, setSubmitting }) => {
                         setStatus();
-                        if (values.dato && (values.cuit == '') ) {
-                            clienteService.getByString(values.dato).then(
-                                consulta => this.setState({ consulta })
-                            );
+                        if (values.dato && (values.cuit == '')) {
+                            clienteService.getByString(values.dato)
+                                .then(
+                                    consulta => {
+                                        this.setState({ consulta })
+                                        setSubmitting(false);
+                                    },
+                                    error => {
+                                        setSubmitting(false);
+                                        setStatus(error);
+                                    })
+                        } else if (values.dato && values.cuit) {
+                            setSubmitting(false);
                         } else {
-                            clienteService.getById(values.cuit).then(
-                                consulta => this.setState({ consulta: [consulta] })
-                            );
+                            clienteService.getById(values.cuit)
+                                .then(
+                                    consulta => {
+                                        this.setState({ consulta: [consulta] })
+                                        setSubmitting(false);
+                                    },
+                                    error => {
+                                        setSubmitting(false);
+                                        setStatus(error);
+                                    });
                         }
                     }
                     }
                 >
-                    {({ map }) => (
+                    {({ map, errors, status, touched, isSubmitting }) => (
 
-                        <div className="container-fluid minh-100 ">
+                        <div className="container-fluid minh-100">
                             <div className="container">
                                 <div className="row justify-content-flex-start align-items-flex-start minh-100">
                                     <div className="buscar-clientes">
@@ -65,16 +92,19 @@ export class Cliente extends Component {
                                                 <Form>
                                                     <div className="form-group txt-color">
                                                         Nombre/Apellido/Razón social:
-                                                        <Field name="dato" type="text" className={'form-control'} />
+                                                        <Field name="dato" type="text" className={'form-control' + (errors.dato && touched.dato ? ' is-invalid' : '')} />
                                                         <ErrorMessage name="dato" component="div" className="invalid-feedback" />
                                                         CUIT:
-                                                        <Field name="cuit" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="dato" component="div" className="invalid-feedback" />
+                                                        <Field name="cuit" type="text" className={'form-control' + (errors.cuit && touched.cuit ? ' is-invalid' : '')} />
+                                                        <ErrorMessage name="cuit" component="div" className="invalid-feedback" />
                                                     </div>
 
                                                     <div className="form-group">
-                                                        <button type="submit" className="btn btn-primary">Buscar</button>
+                                                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Buscar</button>
                                                     </div>
+                                                    {status &&
+                                                        <div className={'alert alert-danger'}>Búsqueda sin resultados.</div>
+                                                    }
                                                 </Form>
                                                 <div className="container">
                                                     <thead>
