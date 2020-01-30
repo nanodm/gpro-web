@@ -112,11 +112,6 @@ export class Cliente extends Component {
                                         setStatus(error);
                                     })
 
-                            if (values.dato && (values.cuit === '')) {
-                                clienteService.getByString(values.dato).then(
-                                    consulta => this.setState({ consulta })
-                                );
-
                             } else {
                                 clienteService.getById(values.cuit)
                                     .then(
@@ -207,3 +202,5 @@ export class Cliente extends Component {
         );
     }
 }
+
+

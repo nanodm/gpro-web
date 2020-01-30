@@ -52,12 +52,14 @@ public class ClienteService : IClienteService
 
     public void NuevoCliente(Cliente cliente)
     {
-        throw new NotImplementedException();
+            _context.Cliente.Add(cliente);
+            _context.SaveChanges();
     }
 
     public void UpdateCliente(Cliente cliente)
     {
-        throw new NotImplementedException();
+            _context.Cliente.Update(cliente);
+            _context.SaveChanges();
     }
 }
 }

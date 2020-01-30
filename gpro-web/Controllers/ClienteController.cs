@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using gpro_web.Dtos;
 using gpro_web.Helpers;
+using gpro_web.Models;
 using gpro_web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +33,7 @@ namespace gpro_web.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Authorize(Roles = "Admin, PM, Miembro")]
+        [AllowAnonymous]
         [HttpGet("dato/{dato}")]
         public IActionResult BuscarCliente(string dato)
         {
@@ -56,6 +58,23 @@ namespace gpro_web.Controllers
                 return NotFound();
             }
 
+            return Ok(cliente);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("act")]
+        public IActionResult UpdateCliente(Cliente cliente)
+        {
+            _clienteService.UpdateCliente(cliente);
+            return Ok(cliente);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("new")]
+        public IActionResult NuevoCliente([FromBody]ClienteDto clienteDtos)
+        {
+            var cliente = _mapper.Map<Cliente>(clienteDtos);
+            _clienteService.NuevoCliente(cliente);
             return Ok(cliente);
         }
     }
