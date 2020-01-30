@@ -99,6 +99,7 @@ export class Cliente extends Component {
 
                     onSubmit={(values, { setStatus, setSubmitting }) => {
                         setStatus();
+<<<<<<< HEAD
                         if (values.dato && (values.cuit == '')) {
                             clienteService.getByString(values.dato)
                                 .then(
@@ -110,6 +111,12 @@ export class Cliente extends Component {
                                         setSubmitting(false);
                                         setStatus(error);
                                     })
+=======
+                        if (values.dato && (values.cuit === '') ) {
+                            clienteService.getByString(values.dato).then(
+                                consulta => this.setState({ consulta })
+                            );
+>>>>>>> arreglos menores
                         } else {
                             clienteService.getById(values.cuit)
                                 .then(
