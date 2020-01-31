@@ -2,6 +2,7 @@
 import { clienteService } from './cliente.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { MDBDataTable } from 'mdbreact';
 
 
 export class Cliente extends Component {
@@ -9,12 +10,13 @@ export class Cliente extends Component {
 
     constructor(props) {
         super(props);
+         
         this.state = {
             consulta: [],
-            mostrar: false
+            mostrar: false,
         };
     }
-    
+
     limpiarPantalla = () => {
         this.setState({
             mostrar: false
@@ -22,7 +24,54 @@ export class Cliente extends Component {
     }
 
     render() {
-        const { consulta, mostrar } = this.state;
+        const data = {
+            columns: [{
+                label: 'CUIT',
+                field: 'idCliente',
+                sort: 'asc',
+                width: 30
+            },
+            {
+                label: 'Razón social',
+                field: 'razonSocialCliente',
+                sort: 'asc',
+                width: 100
+            },
+
+            {
+                label: 'Apellido',
+                field: 'apellidoCliente',
+                sort: 'asc',
+                width: 100
+            },
+            {
+                label: 'Nombre',
+                field: 'nombreCliente',
+                sort: 'asc',
+                width: 100
+            },
+            {
+                label: 'Dirección',
+                field: 'direccionCliente',
+                sort: 'asc',
+                width: 100
+            },
+            {
+                label: 'Teléfono',
+                field: 'telefonoCliente',
+                sort: 'asc',
+                width: 50
+                },
+            {
+                label: 'E-Mail',
+                field: 'emailCliente',
+                sort: 'asc',
+                width: 50
+            }
+            ],
+            rows: this.state.consulta
+        };
+        const { mostrar } = this.state;
         return (
             <div>
                 <Formik
@@ -104,6 +153,8 @@ export class Cliente extends Component {
                         </div>
                     )}
                 </Formik>
+
+                {/*
                 {mostrar &&
                     <div>
                         <div className="container">
@@ -129,7 +180,20 @@ export class Cliente extends Component {
                                     <td className="column-tb2">{cons.emailCliente}</td>
                                 </tr>)}
                         </div>
-                    </div>}
+                    </div>}*/}
+
+                {mostrar && <MDBDataTable
+                    striped
+                    bordered
+                    small
+                    noBottomColumns
+                    searchLabel="Buscar"
+                    entriesLabel="Entradas"
+                    paginationLabel={['Anterior', 'Siguiente']}
+                    infoLabel={['Mostrando', 'a', 'de', 'entradas']}
+                    data={data}
+                />}
+
             </div>
         );
     }
