@@ -37,11 +37,25 @@ namespace gpro_web.Controllers
             var empleados = _empleadoService.AllEmpleados();
 
             if (empleados == null)
+                return NotFound();
+            {
+            }
+
+            return Ok(empleados);
+        }
+
+        [Authorize(Roles = "Admin, PM")]
+        [HttpGet("empleados/{dni}")]
+        public IActionResult BuscarPorDni(int dni)
+        {
+            var empleado = _empleadoService.BuscarPorDni(dni);
+
+            if(empleado == null)
             {
                 return NotFound();
             }
 
-            return Ok(empleados);
+            return Ok(empleado);
         }
     }
 }
