@@ -45,6 +45,20 @@ namespace gpro_web.Controllers
         }
 
         [Authorize(Roles = "Admin, PM")]
+        [HttpGet("empleados/{dato}")]
+        public IActionResult BuscarEmpleado(string dato)
+        {
+            var empleado = _empleadoService.BuscarEmpleados(dato);
+
+            if (empleado == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(empleado);
+        }
+
+        [Authorize(Roles = "Admin, PM")]
         [HttpGet("empleados/{dni}")]
         public IActionResult BuscarPorDni(int dni)
         {

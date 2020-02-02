@@ -10,7 +10,8 @@ namespace gpro_web.Services
     public interface IEmpleadoService
     {
         List<Empleado> AllEmpleados();
-        Empleado BuscarPorDni(int dni);        
+        Empleado BuscarPorDni(int dni);
+        List<Empleado> BuscarEmpleados(string dato);
     }
 
     public class EmpleadoService : IEmpleadoService
@@ -25,6 +26,20 @@ namespace gpro_web.Services
         public List<Empleado> AllEmpleados()
         {
             var empleados = from e in _context.Empleado select e;
+
+            if (empleados.ToList().Count() == 0)
+            {
+                return null;
+            }
+
+            return empleados.ToList();
+        }
+
+        public List<Empleado> BuscarEmpleados(string dato)
+        {
+            var empleados = from e in _context.Empleado
+                            where e.ApellidoEmpleado.Contains(dato) || e.NombreEmpleado.Contains(dato)
+                            select e;
 
             if (empleados.ToList().Count() == 0)
             {

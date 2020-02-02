@@ -36,8 +36,9 @@ public class ClienteService : IClienteService
 
         return clientes.ToList();
     }
-
+    
     public Cliente BuscarPorCuit(Int64 cuit)
+
     {
         var cliente = from b in _context.Cliente
                       where b.IdCliente.Equals(cuit)

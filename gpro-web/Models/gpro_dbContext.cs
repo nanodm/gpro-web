@@ -127,6 +127,8 @@ namespace gpro_web.Models
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Dni).HasColumnName("Dni");
+
                 entity.Property(e => e.Telefono)
                     .IsRequired()
                     .HasMaxLength(20)

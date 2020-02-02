@@ -262,7 +262,8 @@ export default class App extends Component {
                     {!loggedIn && <Redirect to="/login"/>}
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
-                    
+                    {/* RUTA A COMPONENTE EMPLEADOS */}
+
                     {/*<Route path="/recov" component={Recov} />*/}
                     </div >
                 
