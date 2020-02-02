@@ -81,14 +81,14 @@ export class Cliente extends Component {
                         {
                             dato: Yup.string()
                                 .when('cuit', {
-                                    is: (val) => val == undefined,
+                                    is: (val) => val === undefined,
                                     then: Yup.string().required('Al menos un campo es requerido.'),
                                     otherwise: Yup.string().max(0, 'Ingrese datos en un solo campo.')
                                 }),
 
                             cuit: Yup.string()
                                 .when('dato', {
-                                    is: (val) => val == undefined,
+                                    is: (val) => val === undefined,
                                     then: Yup.string().required('Al menos un campo es requerido.'),
                                     otherwise: Yup.string().max(0, 'Ingrese datos en un solo campo.')
                                 })
@@ -100,7 +100,7 @@ export class Cliente extends Component {
                     onSubmit={(values, { setStatus, setSubmitting }) => {
                         setStatus();
 
-                        if (values.dato && (values.cuit == '')) {
+                        if (values.dato && (values.cuit === '')) {
                             clienteService.getByString(values.dato)
                                 .then(
                                     consulta => {
@@ -126,7 +126,7 @@ export class Cliente extends Component {
                             }
                         }
                     }
-                    }
+                    
                     
                 >
                     {({ errors, status, touched, isSubmitting }) => (

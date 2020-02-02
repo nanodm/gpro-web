@@ -3,6 +3,9 @@ import { userService } from './user.service';
 import { authenticationService } from './authentication.service';
 import { clienteService } from './cliente.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import '../custom.css';
+import swal from 'sweetalert';
 
 
 
@@ -15,7 +18,8 @@ export class NuevoCliente extends Component {
         this.state = {
             currentUser: authenticationService.currentUserValue,
             users: null,
-            cliente: ''
+            consulta: [],
+
         };
     }
 
@@ -26,85 +30,134 @@ export class NuevoCliente extends Component {
         }
     }
 
+    handleSubmit = () => alert("Guardado.");
+
     render() {
         return (
             <div>
                 <Formik
                     initialValues={{ idcliente: '', razonsocialcliente: '', apellidocliente: '', nombrecliente: '', direccioncliente: '', telefonocliente: '', emailcliente: '' }}
-                    validate={values => {
-                        let errors = {};
-                        if (!values.idcliente) {
-                            errors = 'Ingrese CUIT.';
-                        } if (!values.razonsocialcliente && !values.apellidocliente && !values.nombrecliente) {
-                            errors = 'Ingrese apellido y nombre o razon social.';
-                        } if (!values.direccioncliente) {
-                            errors = 'Ingrese domicilio.';
-                        }
-                        if (!values.telefonocliente) {
-                            errors = 'Ingrese teléfono.';
-                        }
-                        if (!values.emailcliente) {
-                            errors = 'Ingrese email.';
-                        }
-                        return errors;
-                    }}
-                    onSubmit={(values, { setStatus, setSubmitting }) => {
+
+                    validationSchema={Yup.object().shape(
+                        {
+                            idcliente: Yup.string().required('Campo requerido.'),
+
+                            //razonsocialcliente: Yup.string()
+                            //    .when('razonsocialcliente', {
+                            //        is: (val) => val == undefined,
+                            //        then: Yup.string().required('Campo requerido.')
+                            //    }),
+
+                            //apellidocliente: Yup.string()
+                            //    .when('apellidocliente', {
+                            //        is: (val) => val == undefined,
+                            //        then: Yup.string().required('Campo requerido.')
+                            //    }),
+
+                            //nombrecliente: Yup.string()
+                            //    .when('nombrecliente', {
+                            //        is: (val) => val == undefined,
+                            //        then: Yup.string().required('Campo requerido.')
+                            //    }),
+
+                            direccioncliente: Yup.string().required('Campo requerido.'),
+
+                            telefonocliente: Yup.string().required('Campo requerido.'),
+
+                            emailcliente: Yup.string().required('Campo requerido.')
+
+                        })}
+
+                    onSubmit={(values, { setStatus, setSubmitting, resetForm }) => {
                         setStatus();
-                        clienteService.newCliente(values).then(
-                            cli => {
-                                const { from } = this.props.location.state || { from: { pathname: "/new" } };
-                                this.props.history.push(from);
-                            },
-                            error => {
-                                setSubmitting(false);
-                                setStatus(error);
-                            }
-                        );
-                        
+
+                        clienteService.getById(values.idcliente)
+                            .then(
+                                consulta => {
+                                    this.setState({ consulta: [consulta], mostrar: true });
+                                    setSubmitting(false);
+                                },
+                                error => {
+                                    setSubmitting(false);
+
+                                    if (error === 'Not Found') {
+                                        clienteService.newCliente(values).then(
+                                            cli => {
+                                                const { from } = this.props.location.state // { from: { pathname: "/nuevocliente" } };
+                                                this.props.history.push(from);
+
+
+                                            },
+                                            error => {
+                                                setSubmitting(false);
+                                                setStatus(error);
+
+                                            }
+
+                                        );
+                                        if (error === 'Not Found') {
+                                            swal({
+                                                title: "Guardado con éxito",
+                                                text: "Presione aceptar",
+                                                icon: "success",
+                                                button: "Aceptar"
+                                            });
+                                            error = '';
+                                            setStatus(error);
+                                        }
+                                    }
+                                    resetForm();
+
+
+
+                                });
+                        if (this.error !== 'Not Found') {
+                            this.error = 'Not Found';
+                            setStatus(this.error);
+                        }
+
                     }
                     }
                 >
-                    {({ error, status, touched, isSubmitting }) => (
+                    {({ errors, status, touched, isSubmitting, resetForm }) => (
 
-                        <div className="container-fluid minh-100 ">
-                            <div className="container">
-                                <div className="row justify-content-flex-start align-items-flex-start minh-100">
-                                    <div className="buscar-clientes">
-                                        <div className="card border-0">
-                                            <div className="card-body">
-                                                <Form>
-                                                    <div className="form-group txt-color">
-                                                        CUIT:
-                                                        <Field name="idcliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="idcliente" component="div" className="invalid-feedback" />
-                                                        Razón Social:
+                        <div className="container">
+                            <div className="row">
+                                <div className="col">
+
+                                    <Form>
+                                        <div className="form-group">
+                                            CUIT:
+                                                        <Field name="idcliente" type="text" className={'form-control' + (errors.idcliente && touched.idcliente ? ' is-invalid' : '')} />
+                                            <ErrorMessage name="idcliente" component="div" className="invalid-feedback" />
+                                            Razón Social:
                                                         <Field name="razonsocialcliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="razonsocialcliente" component="div" className="invalid-feedback" />
-                                                        Apellido:
+                                            <ErrorMessage name="razonsocialcliente" component="div" className="invalid-feedback" />
+                                            Apellido:
                                                         <Field name="apellidocliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="apellidocliente" component="div" className="invalid-feedback" />
-                                                        Nombre:
+                                            <ErrorMessage name="apellidocliente" component="div" className="invalid-feedback" />
+                                            Nombre:
                                                         <Field name="nombrecliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="nombrecliente" component="div" className="invalid-feedback" />
-                                                        Domicio:
-                                                        <Field name="direccioncliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="direccioncliente" component="div" className="invalid-feedback" />
-                                                        Teléfono:
-                                                        <Field name="telefonocliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="telefonocliente" component="div" className="invalid-feedback" />
-                                                        e-mail:
-                                                        <Field name="emailcliente" type="text" className={'form-control'} />
-                                                        <ErrorMessage name="emailcliente" component="div" className="invalid-feedback" />
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <button type="submit" className="btn btn-primary">Guardar</button>
-                                                    </div>
-                                                </Form>
-                                                
-                                            </div>
+                                            <ErrorMessage name="nombrecliente" component="div" className="invalid-feedback" />
+                                            Domicio:
+                                                        <Field name="direccioncliente" type="text" className={'form-control' + (errors.direccioncliente && touched.direccioncliente ? ' is-invalid' : '')} />
+                                            <ErrorMessage name="direccioncliente" component="div" className="invalid-feedback" />
+                                            Teléfono:
+                                                        <Field name="telefonocliente" type="text" className={'form-control' + (errors.telefonocliente && touched.telefonocliente ? ' is-invalid' : '')} />
+                                            <ErrorMessage name="telefonocliente" component="div" className="invalid-feedback" />
+                                            e-mail:
+                                                        <Field name="emailcliente" type="text" className={'form-control' + (errors.emailcliente && touched.emailcliente ? ' is-invalid' : '')} />
+                                            <ErrorMessage name="emailcliente" component="div" className="invalid-feedback" />
                                         </div>
-                                    </div>
+
+                                        <div className="form-group">
+                                            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Guardar</button>
+                                        </div>
+                                        {status &&
+                                            <div className={'alert alert-danger'}>El CUIT ya existe en la Base de Datos.</div>
+                                        }
+                                    </Form>
+
                                 </div>
                             </div>
                         </div>
@@ -112,17 +165,5 @@ export class NuevoCliente extends Component {
                 </Formik>
             </div>
         );
-    }
-}
-
-class Clientes {
-    constructor(cuit, raz, ap, nom, dom, tel, mail) {
-        this.cuit = cuit;
-        this.raz = raz;
-        this.ap = ap;
-        this.nom = nom;
-        this.dom = dom;
-        this.tel = tel;
-        this.mail = mail;
     }
 }
