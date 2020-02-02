@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace gpro_web.Controllers
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin, PM, Member")]
     [ApiController]
     [Route("[controller]")]
     public class ClienteController : ControllerBase
@@ -33,7 +33,7 @@ namespace gpro_web.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, PM, Member")]
         [HttpGet("dato/{dato}")]
         public IActionResult BuscarCliente(string dato)
         {
@@ -47,7 +47,7 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [Authorize(Roles = "Admin, PM, Miembro")]
+        [Authorize(Roles = "Admin, PM, Member")]
         [HttpGet("cuit/{id}")]
         public IActionResult BuscarPorCuit(Int64 id)
         {
@@ -61,7 +61,7 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, PM")]
         [HttpGet("act")]
         public IActionResult UpdateCliente(Cliente cliente)
         {
@@ -69,7 +69,7 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, PM")]
         [HttpPost("new")]
         public IActionResult NuevoCliente([FromBody]ClienteDto clienteDtos)
         {

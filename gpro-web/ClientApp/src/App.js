@@ -121,12 +121,11 @@ export default class App extends Component {
                                         <Link to = "/clientes" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Buscar</span>
                                         </Link>
-                                        <Link to="/nuevocliente" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span className="menu-collapsed">Nuevo</span>
-                                        </Link>
-                                        <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span className="menu-collapsed">Lorem Ipsum</span>
-                                        </a>
+                                        {(currentUser.rol == 'Admin' || currentUser.rol == 'PM') ? (
+                                            <Link to="/nuevocliente" className="list-group-item list-group-item-action bg-dark text-white">
+                                                <span className="menu-collapsed">Nuevo</span>
+                                            </Link>) : false 
+                                        }
                                     </div>
                                     <a href="#submenu2" data-toggle="collapse" aria-expanded="false" className="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                                         <div className="d-flex w-100 justify-content-start align-items-center">
@@ -238,10 +237,10 @@ export default class App extends Component {
                             <div className="col p-4">
                                 
                                 <PrivateRoute exact path="/" component={Home} />
-                                <PrivateRoute path="/clientes" roles={["Admin"]} component={Cliente} />
+                                <PrivateRoute path="/clientes" roles={["Admin",'PM', 'Member']} component={Cliente} />
                                 {/*<Route path="/clientes" component={Cliente} />*/}
 
-                                <PrivateRoute path="/nuevocliente" roles={["Admin"]} component={NuevoCliente} />
+                                <PrivateRoute path="/nuevocliente" roles={["Admin", 'PM']} component={NuevoCliente} />
 
                                 {/* 
                                 <h1 className="display-4">Collapsing Sidebar Menu</h1>
