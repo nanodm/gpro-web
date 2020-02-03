@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using gpro_web.Dtos;
 using gpro_web.Helpers;
+using gpro_web.Models;
 using gpro_web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace gpro_web.Controllers
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin, PM, Member")]
     [ApiController]
     [Route("[controller]")]
     public class ClienteController : ControllerBase
@@ -31,7 +33,7 @@ namespace gpro_web.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Authorize(Roles = "Admin, PM, Miembro")]
+        [Authorize(Roles = "Admin, PM, Member")]
         [HttpGet("dato/{dato}")]
         public IActionResult BuscarCliente(string dato)
         {
@@ -45,7 +47,7 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [Authorize(Roles = "Admin, PM, Miembro")]
+        [Authorize(Roles = "Admin, PM, Member")]
         [HttpGet("cuit/{id}")]
         public IActionResult BuscarPorCuit(Int64 id)
         {
@@ -56,6 +58,23 @@ namespace gpro_web.Controllers
                 return NotFound();
             }
 
+            return Ok(cliente);
+        }
+
+        [Authorize(Roles = "Admin, PM")]
+        [HttpGet("act")]
+        public IActionResult UpdateCliente(Cliente cliente)
+        {
+            _clienteService.UpdateCliente(cliente);
+            return Ok(cliente);
+        }
+
+        [Authorize(Roles = "Admin, PM")]
+        [HttpPost("new")]
+        public IActionResult NuevoCliente([FromBody]ClienteDto clienteDtos)
+        {
+            var cliente = _mapper.Map<Cliente>(clienteDtos);
+            _clienteService.NuevoCliente(cliente);
             return Ok(cliente);
         }
     }

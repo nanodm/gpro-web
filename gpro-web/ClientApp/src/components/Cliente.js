@@ -65,20 +65,23 @@ export class Cliente extends Component {
                                         setSubmitting(false);
                                         setStatus(error);
                                     })
-                        } else {
-                            clienteService.getById(values.cuit)
-                                .then(
-                                    consulta => {
-                                        this.setState({ consulta: [consulta], mostrar: true });
-                                        setSubmitting(false);
-                                    },
-                                    error => {
-                                        setSubmitting(false);
-                                        setStatus(error);
-                                    });
+
+                            } else {
+                                clienteService.getById(values.cuit)
+                                    .then(
+                                        consulta => {
+                                            this.setState({ consulta: [consulta], mostrar: true });
+                                            setSubmitting(false);
+                                        },
+                                        error => {
+                                            setSubmitting(false);
+                                            setStatus(error);
+                                        });
+                            }
                         }
                     }
-                    }
+                    
+                    
                 >
                     {({ errors, status, touched, isSubmitting }) => (
                         <div className="container">
@@ -158,5 +161,5 @@ export class Cliente extends Component {
         );
         
     }
-    
 }
+
