@@ -20,9 +20,16 @@ function getById(id) {
 }
 
 function newCliente(cliente) {
+    var hdrs = new Headers();
+    
+    
+    
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            ...authHeader()
+        },
         body: JSON.stringify(cliente)
     };
 

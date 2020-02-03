@@ -121,7 +121,7 @@ export default class App extends Component {
                                         <Link to = "/clientes" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Buscar</span>
                                         </Link>
-                                        {(currentUser.rol == 'Admin' || currentUser.rol == 'PM') ? (
+                                        {(currentUser.rol === 'Admin' || currentUser.rol === 'PM') ? (
                                             <Link to="/nuevocliente" className="list-group-item list-group-item-action bg-dark text-white">
                                                 <span className="menu-collapsed">Nuevo</span>
                                             </Link>) : false 

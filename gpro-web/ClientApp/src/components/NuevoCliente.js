@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
-import { userService } from './user.service';
-import { authenticationService } from './authentication.service';
 import { clienteService } from './cliente.service';
+import { authenticationService } from './authentication.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import '../custom.css';
@@ -16,21 +15,10 @@ export class NuevoCliente extends Component {
         document.body.style.backgroundColor = '#FFFFFF';
         document.body.style.paddingTop = '53px';
         this.state = {
-            currentUser: authenticationService.currentUserValue,
-            users: null,
             consulta: [],
-
+            post: null
         };
     }
-
-    componentDidMount() {
-        const { currentUser } = this.state;
-        if (currentUser.rol === "Admin" || currentUser.rol === "PM") {
-            userService.getAll().then(users => this.setState({ users }));
-        }
-    }
-
-    handleSubmit = () => alert("Guardado.");
 
     render() {
         return (
@@ -83,18 +71,12 @@ export class NuevoCliente extends Component {
                                     if (error === 'Not Found') {
                                         clienteService.newCliente(values).then(
                                             cli => {
-                                                const { from } = this.props.location.state // { from: { pathname: "/nuevocliente" } };
-                                                this.props.history.push(from);
-
-
+                                                return cli;
                                             },
                                             error => {
                                                 setSubmitting(false);
                                                 setStatus(error);
-
-                                            }
-
-                                        );
+                                            });
                                         if (error === 'Not Found') {
                                             swal({
                                                 title: "Guardado con éxito",
@@ -103,28 +85,24 @@ export class NuevoCliente extends Component {
                                                 button: "Aceptar"
                                             });
                                             error = '';
-                                            setStatus(error);
+                                            this.post = 'ok';
+                                            
                                         }
                                     }
                                     resetForm();
-
-
-
-                                });
-                        if (this.error !== 'Not Found') {
-                            this.error = 'Not Found';
-                            setStatus(this.error);
+                                    setStatus(error);
+                            });
+                        if (this.post !== 'ok') {
+                            setStatus('Found');
+                            this.post = null;
                         }
-
                     }
-                    }
-                >
-                    {({ errors, status, touched, isSubmitting, resetForm }) => (
+                    }>
+                    {({ errors, status, touched, isSubmitting }) => (
 
                         <div className="container">
                             <div className="row">
                                 <div className="col">
-
                                     <Form>
                                         <div className="form-group">
                                             CUIT:
