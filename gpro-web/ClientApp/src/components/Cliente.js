@@ -2,7 +2,8 @@
 import { clienteService } from './cliente.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { MDBDataTable } from 'mdbreact';
+//import { MDBDataTable } from 'mdbreact';
+import { TblCliente } from './TblCliente';
 
 
 export class Cliente extends Component {
@@ -22,56 +23,10 @@ export class Cliente extends Component {
             mostrar: false
         });
     }
-
+    
     render() {
-        const data = {
-            columns: [{
-                label: 'CUIT',
-                field: 'idCliente',
-                sort: 'asc',
-                width: 30
-            },
-            {
-                label: 'Razón social',
-                field: 'razonSocialCliente',
-                sort: 'asc',
-                width: 100
-            },
-
-            {
-                label: 'Apellido',
-                field: 'apellidoCliente',
-                sort: 'asc',
-                width: 100
-            },
-            {
-                label: 'Nombre',
-                field: 'nombreCliente',
-                sort: 'asc',
-                width: 100
-            },
-            {
-                label: 'Dirección',
-                field: 'direccionCliente',
-                sort: 'asc',
-                width: 100
-            },
-            {
-                label: 'Teléfono',
-                field: 'telefonoCliente',
-                sort: 'asc',
-                width: 50
-                },
-            {
-                label: 'E-Mail',
-                field: 'emailCliente',
-                sort: 'asc',
-                width: 50
-            }
-            ],
-            rows: this.state.consulta
-        };
-        const { mostrar } = this.state;
+        const { mostrar, consulta } = this.state;
+        
         return (
             <div>
                 <Formik
@@ -99,7 +54,6 @@ export class Cliente extends Component {
 
                     onSubmit={(values, { setStatus, setSubmitting }) => {
                         setStatus();
-
                         if (values.dato && (values.cuit === '')) {
                             clienteService.getByString(values.dato)
                                 .then(
@@ -186,7 +140,7 @@ export class Cliente extends Component {
                         </div>
                     </div>}*/}
 
-                {mostrar && <MDBDataTable
+                {/*{mostrar && <MDBDataTable
                     striped
                     bordered
                     small
@@ -196,11 +150,16 @@ export class Cliente extends Component {
                     paginationLabel={['Anterior', 'Siguiente']}
                     infoLabel={['Mostrando', 'a', 'de', 'entradas']}
                     data={data}
-                />}
+                />}*/}
 
+                {mostrar &&
+                    <TblCliente data={consulta} className="table table-striped table-bordered dt-responsive nowrap">
+
+                    </TblCliente>
+                }
             </div>
         );
+        
     }
 }
-
 
