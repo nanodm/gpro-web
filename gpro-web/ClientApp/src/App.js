@@ -11,6 +11,7 @@ import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { Home } from './components/Home';
 import { Cliente } from './components/Cliente';
+import { Empleado } from './components/Empleado';
 
 /*import { Recov } from './components/Recov';*/
 import Logo from '../src/assets/img/logo-gpro-nav-c.png';
@@ -170,11 +171,11 @@ export default class App extends Component {
                                     </a>
                                     {/* <!-- Submenu content --> */}
                                     <div id='submenu4' className="collapse sidebar-submenu">
+                                        <Link to="/empleados" className="list-group-item list-group-item-action bg-dark text-white">
+                                            <span className="menu-collapsed">Buscar</span>
+                                        </Link>
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span clasName="menu-collapsed">Lorem Ipsum</span>
-                                        </a>
-                                        <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span className="menu-collapsed">Lorem Ipsum</span>
+                                            <span className="menu-collapsed">Nuevo</span>
                                         </a>
                                     </div>
 
@@ -238,6 +239,7 @@ export default class App extends Component {
                                 
                                 <PrivateRoute exact path="/" component={Home} />
                                 <Route path="/clientes" component={Cliente} />
+                                <Route path="/empleados" component={Empleado} />
                                 {/* 
                                 <h1 className="display-4">Collapsing Sidebar Menu</h1>
                                 <div className="card">
