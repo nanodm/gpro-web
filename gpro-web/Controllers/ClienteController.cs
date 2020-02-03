@@ -33,7 +33,6 @@ namespace gpro_web.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Authorize(Roles = "Admin, PM, Member")]
         [HttpGet("dato/{dato}")]
         public IActionResult BuscarCliente(string dato)
         {
@@ -47,7 +46,6 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [Authorize(Roles = "Admin, PM, Member")]
         [HttpGet("cuit/{id}")]
         public IActionResult BuscarPorCuit(Int64 id)
         {
@@ -61,7 +59,7 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [Authorize(Roles = "Admin, PM")]
+        [Authorize(Roles = "Admin,PM")]
         [HttpGet("act")]
         public IActionResult UpdateCliente(Cliente cliente)
         {
@@ -69,7 +67,7 @@ namespace gpro_web.Controllers
             return Ok(cliente);
         }
 
-        [Authorize(Roles = "Admin, PM")]
+        [Authorize(Roles = "Admin,PM")]
         [HttpPost("new")]
         public IActionResult NuevoCliente([FromBody]ClienteDto clienteDtos)
         {
