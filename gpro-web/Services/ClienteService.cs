@@ -10,7 +10,7 @@ namespace gpro_web.Services
     public interface IClienteService
 {
     Cliente BuscarPorCuit(Int64 cuit);
-    List<Cliente> BuscarClientes(String Dato);
+    List<Cliente> BuscarClientes(string Dato);
     void NuevoCliente(Cliente cliente);
     void UpdateCliente(Cliente cliente);
 }

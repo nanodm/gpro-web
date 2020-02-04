@@ -12,6 +12,8 @@ namespace gpro_web.Services
         List<Empleado> AllEmpleados();
         Empleado BuscarPorDni(int dni);
         List<Empleado> BuscarEmpleados(string dato);
+        void NuevoEmpleado(Empleado empleado);
+        void UpdateEmpleado(Empleado empleado);
     }
 
     public class EmpleadoService : IEmpleadoService
@@ -61,6 +63,18 @@ namespace gpro_web.Services
             }
 
             return empleado.ToList().ElementAt(0);
+        }
+
+        public void NuevoEmpleado(Empleado empleado)
+        {
+            _context.Empleado.Add(empleado);
+            _context.SaveChanges();
+        }
+
+        public void UpdateEmpleado(Empleado empleado)
+        {
+            _context.Empleado.Update(empleado);
+            _context.SaveChanges();
         }
     }
 

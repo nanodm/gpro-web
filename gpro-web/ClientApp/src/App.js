@@ -12,6 +12,7 @@ import { Register } from './components/Register';
 import { Home } from './components/Home';
 import { Cliente } from './components/Cliente';
 import { Empleado } from './components/Empleado';
+import { NuevoEmpleado } from './components/NuevoEmpleado';
 
 /*import { Recov } from './components/Recov';*/
 import Logo from '../src/assets/img/logo-gpro-nav-c.png';
@@ -65,10 +66,10 @@ export default class App extends Component {
                             <div className="collapse navbar-collapse" id="navbarNavDropdown">
                                 <ul className="navbar-nav ml-auto">
                                     <li className="nav-link">
-                                        <span class="badge badge-secondary badge-dark text-info"><span className="fa fa-user fa-fw mr-2 pl-2"></span><span className="pr-2 pl-1">{currentUser.username}</span></span>
+                                        <span className="badge badge-secondary badge-dark text-info"><span className="fa fa-user fa-fw mr-2 pl-2"></span><span className="pr-2 pl-1">{currentUser.username}</span></span>
                                     </li>
                                     <li className="nav-link mr-3">
-                                        <span class="badge badge-secondary badge-dark text-info"><span className="fa fa-user-tag fa-fw mr-2 pl-2"></span><span className="pr-2 pl-2">{currentUser.rol}</span></span>
+                                        <span className="badge badge-secondary badge-dark text-info"><span className="fa fa-user-tag fa-fw mr-2 pl-2"></span><span className="pr-2 pl-2">{currentUser.rol}</span></span>
                                     </li>
                                     <li className="nav-item active mr-4">
                                         <a className="nav-link" href="#top">Inicio</a>
@@ -110,7 +111,7 @@ export default class App extends Component {
                                     {/* <!-- /END Separator --> */}
                                     {/* <!-- Menu with submenu --> */}
                                     <a href="#submenu1" data-toggle="collapse" aria-expanded="false" className="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-                                        <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <div className="d-flex w-100 justify-content-start align-items-center">
                                             <span className="fa fa-users fa-fw mr-3"></span>
                                             <span className="menu-collapsed">Clientes</span>
                                             <span className="submenu-icon ml-auto"></span>
@@ -138,7 +139,7 @@ export default class App extends Component {
                                     {/* <!-- Submenu content --> */}
                                     <div id='submenu2' className="collapse sidebar-submenu">
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span clasName="menu-collapsed">Lorem Ipsum</span>
+                                            <span className="menu-collapsed">Lorem Ipsum</span>
                                         </a>
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Lorem Ipsum</span>
@@ -155,7 +156,7 @@ export default class App extends Component {
                                     {/* <!-- Submenu content --> */}
                                     <div id='submenu3' className="collapse sidebar-submenu">
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span clasName="menu-collapsed">Lorem Ipsum</span>
+                                            <span className="menu-collapsed">Lorem Ipsum</span>
                                         </a>
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Lorem Ipsum</span>
@@ -174,9 +175,11 @@ export default class App extends Component {
                                         <Link to="/empleados" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Buscar</span>
                                         </Link>
-                                        <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span className="menu-collapsed">Nuevo</span>
-                                        </a>
+                                        {(currentUser.rol === 'Admin' || currentUser.rol === 'PM') ? (
+                                            <Link to="/nuevoempleado" className="list-group-item list-group-item-action bg-dark text-white">
+                                                <span className="menu-collapsed">Nuevo</span>
+                                            </Link>) : false
+                                        }
                                     </div>
 
                                     <a href="#submenu5" data-toggle="collapse" aria-expanded="false" className="bg-dark list-group-item list-group-item-action flex-column align-items-start">
@@ -189,7 +192,7 @@ export default class App extends Component {
                                     {/* <!-- Submenu content --> */}
                                     <div id='submenu5' className="collapse sidebar-submenu">
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span clasName="menu-collapsed">Lorem Ipsum</span>
+                                            <span className="menu-collapsed">Lorem Ipsum</span>
                                         </a>
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Lorem Ipsum</span>
@@ -213,7 +216,7 @@ export default class App extends Component {
                                     {/* <!-- Submenu content --> */}
                                     <div id='submenu6' className="collapse sidebar-submenu">
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span clasName="menu-collapsed">Lorem Ipsum</span>
+                                            <span className="menu-collapsed">Lorem Ipsum</span>
                                         </a>
                                         <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Lorem Ipsum</span>
@@ -238,21 +241,13 @@ export default class App extends Component {
                             <div className="col p-4">
                                 
                                 <PrivateRoute exact path="/" component={Home} />
+                                {/*<PrivateRoute path="/clientes" roles={["Admin", 'PM', 'Member']} component={Cliente} />
+                                <PrivateRoute path="/empleados" roles={["Admin", 'PM']} component={Empleado} />
+                                <PrivateRoute path="/nuevoempleado" roles={["Admin", 'PM']} component={NuevoEmpleado} />*/}
                                 <Route path="/clientes" component={Cliente} />
                                 <Route path="/empleados" component={Empleado} />
-                                {/* 
-                                <h1 className="display-4">Collapsing Sidebar Menu</h1>
-                                <div className="card">
-                                    <h5 className="card-header font-weight-light">Requirements</h5>
-                                    <div className="card-body">
-                                        <ul>
-                                            <li>JQuery</li>
-                                            <li>Bootstrap 4.3</li>
-                                            <li>FontAwesome</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                */}
+                                <Route path="/nuevoempleado" component={NuevoEmpleado} />
+                                
                             </div>
                             {/* <!-- Main Col END --> */}
                         </div>
@@ -264,7 +259,6 @@ export default class App extends Component {
                     {!loggedIn && <Redirect to="/login"/>}
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
-                    {/* RUTA A COMPONENTE EMPLEADOS */}
 
                     {/*<Route path="/recov" component={Recov} />*/}
                     </div >

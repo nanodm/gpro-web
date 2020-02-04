@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
+using gpro_web.Dtos;
 using gpro_web.Helpers;
+using gpro_web.Models;
 using gpro_web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace gpro_web.Controllers
 {
@@ -69,6 +67,15 @@ namespace gpro_web.Controllers
                 return NotFound();
             }
 
+            return Ok(empleado);
+        }
+
+        [Authorize(Roles = "Admin, PM")]
+        [HttpPost("new")]
+        public IActionResult NuevoEmpleado([FromBody]EmpleadoDto empleadoDto)
+        {
+            var empleado = _mapper.Map<Empleado>(empleadoDto);
+            _empleadoService.NuevoEmpleado(empleado);
             return Ok(empleado);
         }
     }
