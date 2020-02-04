@@ -77,9 +77,10 @@ namespace gpro_web
             // configure DI for application services
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IEmpleadoService, EmpleadoService>();
 
-                // In production, the React files will be served from this directory
-                services.AddSpaStaticFiles(configuration =>
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
                 {
                     configuration.RootPath = "ClientApp/build";
                 });
