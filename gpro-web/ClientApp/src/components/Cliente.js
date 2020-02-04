@@ -2,7 +2,6 @@
 import { clienteService } from './cliente.service';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-//import { MDBDataTable } from 'mdbreact';
 import { TblCliente } from './TblCliente';
 
 
@@ -28,7 +27,7 @@ export class Cliente extends Component {
         const { mostrar, consulta } = this.state;
         
         return (
-            <div>
+            <div className="container">
                 <Formik
                     initialValues={{ dato: '', cuit: '' }}
 
@@ -84,7 +83,7 @@ export class Cliente extends Component {
                     
                 >
                     {({ errors, status, touched, isSubmitting }) => (
-                        <div className="container">
+                        <div>
                             <div className="row">
                                 <div className="col">
                                     <Form>
@@ -112,51 +111,11 @@ export class Cliente extends Component {
                     )}
                 </Formik>
 
-                {/*
                 {mostrar &&
-                    <div>
-                        <div className="container">
-                            <thead>
-                                <tr>
-                                    <th className="column-tb1">CUIT</th>
-                                    <th className="column-tb3">Razon Social</th>
-                                    <th className="column-tb2">Apellido</th>
-                                    <th className="column-tb2">Nombre</th>
-                                    <th className="column-tb3">Domicilio</th>
-                                    <th className="column-tb1">Teléfono</th>
-                                    <th className="column-tb2">E-Mail</th>
-                                </tr>
-                            </thead>
-                            {consulta.map(cons =>
-                                <tr>
-                                    <td className="column-tb1">{cons.idCliente}</td>
-                                    <td className="column-tb3">{cons.razonSocialCliente}</td>
-                                    <td className="column-tb2">{cons.apellidoCliente}</td>
-                                    <td className="column-tb2">{cons.nombreCliente}</td>
-                                    <td className="column-tb3">{cons.direccionCliente}</td>
-                                    <td className="column-tb1">{cons.telefonoCliente}</td>
-                                    <td className="column-tb2">{cons.emailCliente}</td>
-                                </tr>)}
-                        </div>
-                    </div>}*/}
-
-                {/*{mostrar && <MDBDataTable
-                    striped
-                    bordered
-                    small
-                    noBottomColumns
-                    searchLabel="Buscar"
-                    entriesLabel="Entradas"
-                    paginationLabel={['Anterior', 'Siguiente']}
-                    infoLabel={['Mostrando', 'a', 'de', 'entradas']}
-                    data={data}
-                />}*/}
-
-                {mostrar &&
-                    <TblCliente data={consulta} className="table table-striped table-bordered dt-responsive nowrap">
-
+                    <TblCliente data={consulta}>
                     </TblCliente>
                 }
+
             </div>
         );
         
