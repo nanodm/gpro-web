@@ -40,7 +40,7 @@ export class Empleado extends Component {
                                     otherwise: Yup.string().max(0, 'Ingrese datos en un solo campo.')
                                 }),
 
-                            cuit: Yup.string()
+                            dni: Yup.string()
                                 .when('dato', {
                                     is: (val) => val === undefined,
                                     then: Yup.string().required('Al menos un campo es requerido.'),
@@ -92,8 +92,8 @@ export class Empleado extends Component {
                                                         <Field name="dato" type="text" className={'form-control' + (errors.dato && touched.dato ? ' is-invalid' : '')} />
                                             <ErrorMessage name="dato" component="div" className="invalid-feedback" />
                                             DNI:
-                                                        <Field name="cuit" type="text" className={'form-control' + (errors.dni && touched.dni ? ' is-invalid' : '')} />
-                                            <ErrorMessage name="cuit" component="div" className="invalid-feedback" />
+                                                        <Field name="dni" type="text" className={'form-control' + (errors.dni && touched.dni ? ' is-invalid' : '')} />
+                                            <ErrorMessage name="dni" component="div" className="invalid-feedback" />
                                         </div>
 
                                         <div className="form-group">

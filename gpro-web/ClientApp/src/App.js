@@ -13,6 +13,7 @@ import { Home } from './components/Home';
 import { Cliente } from './components/Cliente';
 import { NuevoCliente } from './components/NuevoCliente';
 import { Empleado } from './components/Empleado';
+import { NuevoEmpleado } from './components/NuevoEmpleado';
 
 /*import { Recov } from './components/Recov';*/
 import Logo from '../src/assets/img/logo-gpro-nav-c.png';
@@ -174,9 +175,11 @@ export default class App extends Component {
                                         <Link to="/empleados" className="list-group-item list-group-item-action bg-dark text-white">
                                             <span className="menu-collapsed">Buscar</span>
                                         </Link>
-                                        <a href="#" className="list-group-item list-group-item-action bg-dark text-white">
-                                            <span className="menu-collapsed">Nuevo</span>
-                                        </a>
+                                        {(currentUser.rol === 'Admin') ? (
+                                            <Link to="/nuevoempleado" className="list-group-item list-group-item-action bg-dark text-white">
+                                                <span className="menu-collapsed">Nuevo</span>
+                                            </Link>) : false
+                                        }
                                     </div>
 
                                     <a href="#submenu5" data-toggle="collapse" aria-expanded="false" className="bg-dark list-group-item list-group-item-action flex-column align-items-start">
@@ -243,6 +246,7 @@ export default class App extends Component {
 
                                 <PrivateRoute path="/nuevocliente" roles={["Admin", 'PM']} component={NuevoCliente} />
                                 <PrivateRoute path="/empleados" roles={["Admin", 'PM']} component={Empleado} />
+                                <PrivateRoute path="/nuevoempleado" roles={["Admin"]} component={NuevoEmpleado} />
 
                                 {/* 
                                 <h1 className="display-4">Collapsing Sidebar Menu</h1>

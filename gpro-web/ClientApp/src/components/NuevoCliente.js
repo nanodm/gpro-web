@@ -6,8 +6,6 @@ import * as Yup from 'yup';
 import '../custom.css';
 import swal from 'sweetalert';
 
-
-
 export class NuevoCliente extends Component {
     static displayName = NuevoCliente.name;
     constructor(props) {
