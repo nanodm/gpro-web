@@ -4,6 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import '../custom.css';
 import swal from 'sweetalert';
+import { log } from 'util';
 
 export class NuevoEmpleado extends Component {
     static displayName = NuevoEmpleado.name;
@@ -41,9 +42,19 @@ export class NuevoEmpleado extends Component {
 
                             nombreempleado: Yup.string().required('Campo requerido.'),
 
+                            fechaingreso: Yup.string().required('Campo requerido.'),
+
+                            telefono: Yup.string().required('Campo requerido.'),
+
                             domicilio: Yup.string().required('Campo requerido.'),
 
-                            dni: Yup.string().required('Campo requerido.')
+                            localidad: Yup.string().required('Campo requerido.'),
+
+                            provincia: Yup.string().required('Campo requerido.'),
+
+                            dni: Yup.string().required('Campo requerido.'),
+
+                            nacionalidad: Yup.string().required('Campo requerido.')
 
                         })}
 
@@ -62,6 +73,7 @@ export class NuevoEmpleado extends Component {
                                     if (error === 'Not Found') {
                                         empleadoService.newEmpleado(values).then(
                                             emp => {
+                                                console.log(emp);
                                                 return emp;
                                             },
                                             error => {
@@ -106,22 +118,22 @@ export class NuevoEmpleado extends Component {
                                                         <Field name="dni" type="text" className={'form-control' + (errors.dni && touched.dni ? ' is-invalid' : '')} />
                                             <ErrorMessage name="dni" component="div" className="invalid-feedback" />
                                             Fecha de ingreso:
-                                                        <Field name="fechaingreso" type="text" className={'form-control'} />
+                                                        <Field name="fechaingreso" type="text" className={'form-control' + (errors.fechaingreso && touched.fechaingreso ? ' is-invalid' : '')} />
                                             <ErrorMessage name="fechaingreso" component="div" className="invalid-feedback" />
                                             Telefono:
-                                                        <Field name="telefono" type="text" className={'form-control'} />
+                                                        <Field name="telefono" type="text" className={'form-control' + (errors.telefono && touched.telefono ? ' is-invalid' : '')} />
                                             <ErrorMessage name="telefono" component="div" className="invalid-feedback" />
                                             Domicilio:
                                                         <Field name="domicilio" type="text" className={'form-control' + (errors.domicilio && touched.domicilio ? ' is-invalid' : '')} />
                                             <ErrorMessage name="domicilio" component="div" className="invalid-feedback" />
                                             Localidad:
-                                                        <Field name="localidad" type="text" className={'form-control'} />
+                                                        <Field name="localidad" type="text" className={'form-control' + (errors.localidad && touched.localidad ? ' is-invalid' : '')} />
                                             <ErrorMessage name="localidad" component="div" className="invalid-feedback" />
                                             Provincia:
-                                                        <Field name="provincia" type="text" className={'form-control'} />
+                                                        <Field name="provincia" type="text" className={'form-control' + (errors.provincia && touched.provincia ? ' is-invalid' : '')} />
                                             <ErrorMessage name="provincia" component="div" className="invalid-feedback" />
                                             Nacionalidad:
-                                                        <Field name="nacionalidad" type="text" className={'form-control'} />
+                                                        <Field name="nacionalidad" type="text" className={'form-control' + (errors.nacionalidad && touched.nacionalidad ? ' is-invalid' : '')} />
                                             <ErrorMessage name="nacionalidad" component="div" className="invalid-feedback" />
                                         </div>
 

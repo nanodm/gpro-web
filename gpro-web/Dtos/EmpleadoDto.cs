@@ -12,7 +12,7 @@ namespace gpro_web.Dtos
         public string Domicilio { get; set; }
         public string Localidad { get; set; }
         public string Provincia { get; set; }
-        public int DniEmpleado { get; set; }
+        public int Dni { get; set; }
         public string Nacionalidad { get; set; }
     }
 }

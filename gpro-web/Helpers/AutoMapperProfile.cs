@@ -12,6 +12,8 @@ namespace WebApi.Helpers
             CreateMap<UserDto, Usuario>();
             CreateMap<Cliente, ClienteDto>();
             CreateMap<ClienteDto, Cliente>();
+            CreateMap<Empleado, EmpleadoDto>();
+            CreateMap<EmpleadoDto, Empleado>();
         }
     }
 }
